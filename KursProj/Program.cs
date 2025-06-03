@@ -12,6 +12,19 @@ using Microsoft.Extensions.Options;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy
+          .WithOrigins("http://localhost:5173")  // <-- Ваш фронтенд
+          .AllowAnyHeader()
+          .AllowAnyMethod()
+          .AllowCredentials();                   // <-- Разрешаем куки и креденшелы
+    });
+});
+
+
 builder.Services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
 
 var jwtOptions = configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>();
@@ -41,6 +54,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();

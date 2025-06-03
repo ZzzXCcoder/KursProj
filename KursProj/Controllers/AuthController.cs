@@ -33,6 +33,23 @@ namespace KursProj.Controller
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        [HttpPost("register-admin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUserRequestDto newUser)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                await _userService.RegisterAdmin(newUser);
+                return Ok(new { message = "User registered successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginDto)
         {
@@ -42,7 +59,16 @@ namespace KursProj.Controller
             try
             {
                 var token = await _userService.Login(loginDto.Email, loginDto.Login, loginDto.Password);
-                HttpContext.Response.Cookies.Append("RealCoockie", token);
+
+                
+                HttpContext.Response.Cookies.Append("RealCoockie", token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,           
+                    SameSite = SameSiteMode.None,
+                    Path = "/"
+                });
+
                 return Ok(new { token });
             }
             catch (Exception ex)
@@ -55,9 +81,10 @@ namespace KursProj.Controller
         [HttpGet("protected")]
         public IActionResult Protected()
         {
-            // Можно получить данные текущего пользователя
+            
             var userName = User.Identity?.Name ?? "неизвестный пользователь";
             return Ok($"Вы авторизованы! Привет, {userName}");
         }
+      
     }
 }

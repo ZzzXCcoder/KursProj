@@ -4,7 +4,9 @@ namespace KursProj.IServices
 {
     public interface IUserService
     {
-        Task<string> Login(string email, string login, string password);
-        Task Register(RegisterUserRequestDto newUser);
+        public Task<string> Login(string email, string login, string password);
+
+        public Task RegisterAdmin(RegisterUserRequestDto newUser);
+        public Task Register(RegisterUserRequestDto newUser);
     }
 }

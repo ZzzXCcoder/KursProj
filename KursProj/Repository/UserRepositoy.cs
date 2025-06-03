@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KursProj.Repository
 {
-    public class UserRepositoy : IRepository.IUserRepositoy
+    public class UserRepositoy : IUserRepositoy
     {
         public ApplicationDbContext _dbContext;
         public UserRepositoy(ApplicationDbContext dbContext)
@@ -40,6 +40,28 @@ namespace KursProj.Repository
             return await _dbContext.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Email == email);
+        }
+
+        public async Task AddAdmin(RegisterUserRequestDto registerUser)
+        {
+            if (registerUser != null)
+            {
+                var user = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = registerUser.Name,
+                    Surname = registerUser.Surname,
+                    Email = registerUser.Email,
+                    Login = registerUser.Login,
+                    Password = registerUser.Password,
+                    RegistrationDate = DateTime.UtcNow,
+                    ProfileImage = "",
+                    Role = "Admin"
+                };
+                await _dbContext.Users.AddAsync(user);
+                await _dbContext.SaveChangesAsync();
+            }
+
         }
 
 

@@ -25,6 +25,13 @@ namespace KursProj.Services
             await _userRepositoy.AddUser(newUser);
 
         }
+        public async Task RegisterAdmin(RegisterUserRequestDto newUser)
+        {
+            var hashedPassword = _passwordHasher.Generate(newUser.Password);
+            newUser.Password = hashedPassword;
+            await _userRepositoy.AddAdmin(newUser);
+
+        }
         public async Task<string> Login(string email, string login, string password)
         {
             var user = await _userRepositoy.GetByEmailAsync(email);

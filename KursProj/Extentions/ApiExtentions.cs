@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 
@@ -22,19 +23,25 @@ namespace KursProj.Extentions
                         ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtoptions.Value.SecretKey))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtoptions.Value.SecretKey)),
+                        RoleClaimType = ClaimTypes.Role
                     };
                     options.Events = new JwtBearerEvents
                     {
                         OnMessageReceived = context =>
                         {
-                            context.Token = context.Request.Cookies["RealCoockie"];
+                            if (context.Request.Cookies.ContainsKey("RealCoockie"))
+                            {
+                                context.Token = context.Request.Cookies["RealCoockie"];
+                            }
                             return Task.CompletedTask;
                         }
                     };
                 });
-            services.AddAuthentication();
+
+
         }
+
 
     }
 }
