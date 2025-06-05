@@ -41,7 +41,12 @@ namespace KursProj.Repository
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Email == email);
         }
-
+        public async Task<User?> GetById(Guid userId)
+        {
+            return await _dbContext.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == userId);
+        }
         public async Task AddAdmin(RegisterUserRequestDto registerUser)
         {
             if (registerUser != null)

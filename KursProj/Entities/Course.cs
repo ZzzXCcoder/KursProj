@@ -12,9 +12,9 @@ namespace KursProj.Entities
 
         public string Description { get; set; }
 
-        public string Type { get; set; } // online, offline
+        public string Type { get; set; } 
         [ForeignKey("Instructor")]
-        public Guid? InstructorID { get; set; } // nullable, если курс без преподавателя
+        public Guid? InstructorID { get; set; } 
         public User Instructor { get; set; }
         public List<Lesson> Lessons { get; set; } = new List<Lesson>();
         public List<CourseImage> CourseImages { get; set; } = new List<CourseImage>();

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace KursProj.Controller
+namespace KursProj.Controllers.UserController
 {
     [ApiController]
     [Route("api/[controller]")]
