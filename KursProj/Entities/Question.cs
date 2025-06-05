@@ -5,9 +5,9 @@ namespace KursProj.Entities
     public class Question
     {
         [Key]
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         [Required]
-        public Guid TestID { get; set; }
+        public Guid TestId { get; set; }
         [Required]
         public string QuestionText { get; set; }
         public string QuestionType { get; set; } // multiple choice, text input и т.д.

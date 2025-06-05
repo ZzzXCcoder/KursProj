@@ -5,9 +5,9 @@ namespace KursProj.Entities
     public class UserLessonView
     {
         [Key]
-        public Guid UserID { get; set; }
+        public Guid UserId { get; set; }
         [Key]
-        public Guid LessonID { get; set; }
+        public Guid LessonId { get; set; }
         public DateTime ViewDate { get; set; }
 
         public User User { get; set; }

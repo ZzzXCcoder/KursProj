@@ -5,11 +5,11 @@ namespace KursProj.Entities
     public class TestResult
     {
         [Key]
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         [Required]
-        public Guid TestID { get; set; }
+        public Guid TestId { get; set; }
         [Required]
-        public Guid UserID { get; set; }
+        public Guid UserId { get; set; }
         public double? Score { get; set; } // Оценка (nullable, если тест не пройден)
         public DateTime DateCompleted { get; set; }
         public Test Test { get; set; }

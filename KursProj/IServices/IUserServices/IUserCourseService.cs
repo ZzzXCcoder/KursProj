@@ -1,11 +1,9 @@
 ﻿using KursProj.Dtos;
-using KursProj.Entities;
 
-namespace KursProj.IRepository
+namespace KursProj.IServices.IUserServices
 {
-    public interface ICourseRepository
+    public interface IUserCourseService
     {
-        Task<bool> CreateCourse(CreateCourseRequest createCourseRequest, User instructor);
         Task<List<CourseListItemDto>> GetPagedCoursesAsync(int page, int pageSize);
         Task<ShowCourceDto> ShowCourse(Guid courseId);
         Task<bool> SubscribeUserToCourse(Guid userId, Guid courseId);

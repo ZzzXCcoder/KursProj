@@ -5,9 +5,9 @@ namespace KursProj.Entities
     public class UserLessonStatus
     {
         [Key]
-        public Guid UserID { get; set; }
+        public Guid UserId { get; set; }
         [Key]
-        public Guid LessonID { get; set; }
+        public Guid LessonId { get; set; }
         [Required]
         public string Status { get; set; } // "locked", "unlocked", "completed"
         public DateTime? UnlockDate { get; set; } // Дата разблокировки (если разблокировка по времени)

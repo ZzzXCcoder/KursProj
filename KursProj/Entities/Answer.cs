@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
         public class Answer
         {
             [Key]
-            public int ID { get; set; }
+            public int Id { get; set; }
             [Required]
             [ForeignKey(nameof(Question))]
             public Guid QuestionID { get; set; }

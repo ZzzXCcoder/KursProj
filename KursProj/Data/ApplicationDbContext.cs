@@ -26,16 +26,16 @@ namespace KursProj.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserCourse>()
-           .HasKey(uc => new { uc.UserID, uc.CourseID });
+           .HasKey(uc => new { uc.UserId, uc.CourseId });
 
             modelBuilder.Entity<UserLessonStatus>()
-                .HasKey(uls => new { uls.UserID, uls.LessonID });
+                .HasKey(uls => new { uls.UserId, uls.LessonId });
 
             modelBuilder.Entity<CourseTestAvailability>()
-                .HasKey(cta => new { cta.CourseID, cta.TestID });
+                .HasKey(cta => new { cta.CourseId, cta.TestId });
 
             modelBuilder.Entity<UserLessonView>()
-                .HasKey(ulv => new { ulv.UserID, ulv.LessonID });
+                .HasKey(ulv => new { ulv.UserId, ulv.LessonId });
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.User)
                 .WithMany(u => u.Notifications)

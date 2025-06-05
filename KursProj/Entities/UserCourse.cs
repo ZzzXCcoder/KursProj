@@ -5,10 +5,10 @@ namespace KursProj.Entities
     public class UserCourse
     {
         [Key]
-        public Guid UserID { get; set; }
+        public Guid UserId { get; set; }
         [Key]
-        public Guid CourseID { get; set; }
-        public DateTime EnrollmentDate { get; set; }
+        public Guid CourseId { get; set; }
+        public DateTime SubscriptionDate { get; set; }
 
         public User User { get; set; }
         public Course Course { get; set; }

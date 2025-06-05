@@ -5,9 +5,9 @@ namespace KursProj.Entities
     public class CourseImage
     {
         [Key]
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         [Required]
-        public Guid CourseID { get; set; }
+        public Guid CourseId { get; set; }
         [Required]
         public string ImageUrl { get; set; }
         public int? ImageOrder { get; set; } // Порядок отображения (null, если не важен)

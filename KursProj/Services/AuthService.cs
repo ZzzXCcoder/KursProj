@@ -1,18 +1,17 @@
 ﻿using KursProj.Dtos;
 using KursProj.IRepository;
-using KursProj.IServices;
 using KursProj.IServices.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace KursProj.Services
 {
-    public class UserService : IUserService
+    public class AuthService : IAuthService
     {
         private readonly IPasswordHasher _passwordHasher;
-        private readonly IUserRepositoy _userRepositoy;
+        private readonly IAuthRepository _userRepositoy;
         private readonly IJWTProvider _jwtProvider;
-        public UserService(IPasswordHasher passwordHasher, IUserRepositoy registerUserRepositoy, IJWTProvider jWTProvider)
+        public AuthService(IPasswordHasher passwordHasher, IAuthRepository registerUserRepositoy, IJWTProvider jWTProvider)
         {
             _passwordHasher = passwordHasher;
             _userRepositoy = registerUserRepositoy;

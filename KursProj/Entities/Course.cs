@@ -14,7 +14,7 @@ namespace KursProj.Entities
 
         public string Type { get; set; } 
         [ForeignKey("Instructor")]
-        public Guid? InstructorID { get; set; } 
+        public Guid? InstructorId { get; set; } 
         public User Instructor { get; set; }
         public List<Lesson> Lessons { get; set; } = new List<Lesson>();
         public List<CourseImage> CourseImages { get; set; } = new List<CourseImage>();

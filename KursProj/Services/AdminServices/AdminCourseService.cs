@@ -8,9 +8,9 @@ namespace KursProj.Services.AdminServices
     public class AdminCourseService : IAdminCourseService
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly IUserRepositoy _userRepositoy;
+        private readonly IAuthRepository _userRepositoy;
 
-        public AdminCourseService(ICourseRepository courseRepository, IUserRepositoy userRepositoy)
+        public AdminCourseService(ICourseRepository courseRepository, IAuthRepository userRepositoy)
         {
             _courseRepository = courseRepository;
             _userRepositoy = userRepositoy;

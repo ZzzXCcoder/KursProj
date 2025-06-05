@@ -5,9 +5,9 @@ namespace KursProj.Entities
     public class Lesson
     {
         [Key]
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         [Required]
-        public Guid CourseID { get; set; }
+        public Guid CourseId { get; set; }
         [Required]
         public string Title { get; set; }
         public string Description { get; set; }

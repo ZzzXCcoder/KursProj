@@ -1,5 +1,5 @@
 ﻿using KursProj.Dtos;
-using KursProj.IServices;
+using KursProj.IServices.Auth;
 using KursProj.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +10,9 @@ namespace KursProj.Controller
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IAuthService _userService;
         
-        public AuthController(IUserService userService)
+        public AuthController(IAuthService userService)
         {
             _userService = userService;
         }

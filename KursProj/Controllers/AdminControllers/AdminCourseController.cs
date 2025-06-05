@@ -1,4 +1,5 @@
 ﻿using KursProj.Dtos;
+using KursProj.IServices;
 using KursProj.IServices.IAdminServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace KursProj.Controllers.AdminControllers
     [Authorize(Roles = "Admin")]
     public class AdminCourseController : ControllerBase
     {
-        IAdminCourseService _adminCourseService;
-        public AdminCourseController(IAdminCourseService adminCourseService)
+        private readonly IAdminCourseService _adminCourseService;
+        private readonly IUserContextService _userContextService;
+        public AdminCourseController(IAdminCourseService adminCourseService, IUserContextService userContextService)
         {
-            _adminCourseService = adminCourseService;      
+            _adminCourseService = adminCourseService;
+            _userContextService = userContextService;
         }
 
         [HttpPost("createcourse")]
@@ -23,7 +26,7 @@ namespace KursProj.Controllers.AdminControllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var userId = GetUserIdFromClaims();
+            var userId = _userContextService.GetUserId();
             var result = await _adminCourseService.CreateCourse(request, userId);
 
             if (!result.IsSuccess)
@@ -31,13 +34,6 @@ namespace KursProj.Controllers.AdminControllers
 
             return Ok("Курс успешно создан");
         }
-        private Guid GetUserIdFromClaims()
-        {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "userId");
-            if (userIdClaim == null)
-                throw new UnauthorizedAccessException("User ID not found in claims");
 
-            return Guid.Parse(userIdClaim.Value);
-        }
     }
 }

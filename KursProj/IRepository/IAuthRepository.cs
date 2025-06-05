@@ -3,7 +3,7 @@ using KursProj.Entities;
 
 namespace KursProj.IRepository
 {
-    public interface IUserRepositoy
+    public interface IAuthRepository
     {
         public Task AddUser(RegisterUserRequestDto registerUser);
         public Task<User?> GetByEmailAsync(string email);

@@ -3,6 +3,7 @@ using KursProj.Dtos;
 using KursProj.Entities;
 using KursProj.IRepository;
 using KursProj.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace KursProj.Repository
 {
@@ -10,9 +11,9 @@ namespace KursProj.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly UploadFileService _uploadFileService;
-        private readonly IUserRepositoy _userRepository;
+        private readonly IAuthRepository _userRepository;
 
-        public CourseRepository(ApplicationDbContext dbContext, IUserRepositoy userRepository, UploadFileService uploadFileService)
+        public CourseRepository(ApplicationDbContext dbContext, IAuthRepository userRepository, UploadFileService uploadFileService)
         {
             _dbContext = dbContext;
             _userRepository = userRepository;
@@ -25,7 +26,7 @@ namespace KursProj.Repository
             var newCourse = new Course
             {
                 Id = Guid.NewGuid(),
-                InstructorID = instructor.Id,
+                InstructorId = instructor.Id,
                 Instructor = instructor,
                 Description = createCourseRequest.Description,
                 Name = createCourseRequest.Name,
@@ -40,8 +41,8 @@ namespace KursProj.Repository
                 var path = await _uploadFileService.Upload(file);
                 newCourse.CourseImages.Add(new CourseImage
                 {
-                    ID = Guid.NewGuid(),
-                    CourseID = newCourse.Id,
+                    Id = Guid.NewGuid(),
+                    CourseId = newCourse.Id,
                     ImageOrder = order++,
                     ImageUrl = path
                 });
@@ -52,7 +53,91 @@ namespace KursProj.Repository
 
             return true;
         }
-        public async Task<>
+        public async Task<ShowCourceDto> ShowCourse(Guid courseId)
+        {
+            var course = await _dbContext.Courses
+                                         .Include(c => c.CourseImages)
+                                         .FirstOrDefaultAsync(c => c.Id == courseId);
+            if (course == null) return null;
+
+            var courseToShow = new ShowCourceDto()
+            {
+                Name = course.Name,
+                Type = course.Type,
+                Description = course.Description,
+                ImageUrl = course.CourseImages
+                                 .Select(ci => ci.ImageUrl)
+                                 .FirstOrDefault() ?? string.Empty
+            };
+            return courseToShow;
+        }
+        public async Task<List<CourseListItemDto>> GetPagedCoursesAsync(int page, int pageSize)
+        {
+            var skip = (page - 1) * pageSize;
+
+            var courses = await _dbContext.Courses
+                .Include(c => c.CourseImages)
+                .OrderBy(c => c.Name)  
+                .Skip(skip)
+                .Take(pageSize)
+                .Select(c => new CourseListItemDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Description = c.Description,
+                    Type = c.Type,
+                    ImageUrl = c.CourseImages
+                        .OrderBy(ci => ci.ImageOrder)
+                        .Select(ci => ci.ImageUrl)
+                        .FirstOrDefault() ?? string.Empty
+                })
+                .ToListAsync();
+
+            return courses;
+        }
+        public async Task<bool> DeleteCourse(Guid courseId)
+        {
+            var course = await _dbContext.Courses
+                .Include(c => c.CourseImages)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+            if (course == null)
+                return false;
+
+           
+            _dbContext.CourseImages.RemoveRange(course.CourseImages);
+
+            _dbContext.Courses.Remove(course);
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> SubscribeUserToCourse(Guid userId, Guid courseId)
+        {
+            var user = await _dbContext.Users.FindAsync(userId);
+            var course = await _dbContext.Courses.FindAsync(courseId);
+
+            if (user == null || course == null)
+                return false;
+
+            var alreadySubscribed = await _dbContext.UserCourses
+                .AnyAsync(uc => uc.UserId == userId && uc.CourseId == courseId);
+
+            if (alreadySubscribed)
+                return false;
+
+            var userCourse = new UserCourse
+            {
+                UserId = userId,
+                CourseId = courseId,
+                SubscriptionDate = DateTime.UtcNow
+            };
+
+            await _dbContext.UserCourses.AddAsync(userCourse);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
+        }
 
 
 

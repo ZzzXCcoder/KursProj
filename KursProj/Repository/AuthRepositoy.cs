@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KursProj.Repository
 {
-    public class UserRepositoy : IUserRepositoy
+    public class AuthRepositoy : IAuthRepository
     {
         public ApplicationDbContext _dbContext;
-        public UserRepositoy(ApplicationDbContext dbContext)
+        public AuthRepositoy(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
