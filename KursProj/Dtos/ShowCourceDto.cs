@@ -10,6 +10,9 @@ namespace KursProj.Dtos
 
         public string Type { get; set; }
 
-        public string ImageUrl { get; set; }
+        public List<string> ImageUrl { get; set; }
+
+        public List<ShowCourseLessonsDto> courseLessons { get; set; }
+
     }
 }

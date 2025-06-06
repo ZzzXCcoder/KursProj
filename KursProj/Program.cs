@@ -41,6 +41,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 
+builder.Services.AddScoped<UploadFileService>();
+
 builder.Services.AddScoped<IAuthRepository, AuthRepositoy>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJWTProvider, JWTProvider>();
@@ -48,7 +50,10 @@ builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 builder.Services.AddScoped<IAdminCourseService, AdminCourseService>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-builder.Services.AddScoped<UploadFileService>();
+
+
+builder.Services.AddScoped<ILessonRepository, LessonRepository>();
+builder.Services.AddScoped<IAdminLessonService, AdminLessonService>();
 
 builder.Services.AddScoped<IUserCourseService, UserCourseService>();
 

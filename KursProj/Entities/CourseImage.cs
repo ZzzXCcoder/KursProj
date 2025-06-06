@@ -10,7 +10,7 @@ namespace KursProj.Entities
         public Guid CourseId { get; set; }
         [Required]
         public string ImageUrl { get; set; }
-        public int? ImageOrder { get; set; } // Порядок отображения (null, если не важен)
+        public int? ImageOrder { get; set; } 
         public Course Course { get; set; }
     }
 }

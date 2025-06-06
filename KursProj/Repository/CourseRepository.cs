@@ -57,6 +57,7 @@ namespace KursProj.Repository
         {
             var course = await _dbContext.Courses
                                          .Include(c => c.CourseImages)
+                                         .Include(l => l.Lessons)
                                          .FirstOrDefaultAsync(c => c.Id == courseId);
             if (course == null) return null;
 
@@ -67,7 +68,16 @@ namespace KursProj.Repository
                 Description = course.Description,
                 ImageUrl = course.CourseImages
                                  .Select(ci => ci.ImageUrl)
-                                 .FirstOrDefault() ?? string.Empty
+                                 .ToList(),
+                courseLessons = course.Lessons
+                                    .Select(lesson => new ShowCourseLessonsDto
+                                    {
+                                        Id = lesson.Id,
+                                        Name = lesson.Title,
+                                        Description = lesson.Description,
+                                    })
+                                    .ToList()
+
             };
             return courseToShow;
         }
