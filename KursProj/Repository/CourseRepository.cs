@@ -75,6 +75,7 @@ namespace KursProj.Repository
                                         Id = lesson.Id,
                                         Name = lesson.Title,
                                         Description = lesson.Description,
+                                        Order = lesson.LessonNumber,
                                     })
                                     .ToList()
 

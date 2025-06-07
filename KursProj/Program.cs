@@ -57,6 +57,14 @@ builder.Services.AddScoped<IAdminLessonService, AdminLessonService>();
 
 builder.Services.AddScoped<IUserCourseService, UserCourseService>();
 
+builder.Services.AddScoped<IUserLessonService, UserLessonService>();
+
+
+builder.Services.AddScoped<ITestRepository, TestRepository>();
+builder.Services.AddScoped<IAdminTestService, AdminTestService>();
+builder.Services.AddScoped<IUserTestService, UserTestService>();
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));

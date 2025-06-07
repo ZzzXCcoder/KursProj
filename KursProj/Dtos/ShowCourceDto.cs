@@ -14,5 +14,6 @@ namespace KursProj.Dtos
 
         public List<ShowCourseLessonsDto> courseLessons { get; set; }
 
+
     }
 }
