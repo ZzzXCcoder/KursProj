@@ -56,7 +56,7 @@ namespace KursProj.Repository
         public async Task<ShowCourceDto> ShowCourse(Guid courseId)
         {
             var course = await _dbContext.Courses
-                                         .Include(c => c.CourseImages)
+                                         .Include(c => c.CourseImages.OrderBy(ci => ci.ImageOrder))
                                          .Include(l => l.Lessons)
                                          .FirstOrDefaultAsync(c => c.Id == courseId);
             if (course == null) return null;
@@ -148,6 +148,17 @@ namespace KursProj.Repository
             await _dbContext.SaveChangesAsync();
 
             return true;
+        }
+        public async Task<Course?> GetByIdAsync(Guid id)
+        {
+            return await _dbContext.Courses.FindAsync(id);
+        }
+
+        public async Task UpdateDescriptionAsync(Course course, string newDescription)
+        {
+            course.Description = newDescription;
+            _dbContext.Courses.Update(course); // Явно указываем, что курс нужно обновить
+            await _dbContext.SaveChangesAsync();
         }
 
 

@@ -12,6 +12,8 @@ using KursProj.Services.AdminServices;
 using KursProj.IServices;
 using KursProj.Services.UserService;
 using KursProj.IServices.IUserServices;
+using Microsoft.Extensions.FileProviders;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -24,7 +26,7 @@ builder.Services.AddCors(options =>
           .WithOrigins("http://localhost:5173")  // <-- Ваш фронтенд
           .AllowAnyHeader()
           .AllowAnyMethod()
-          .AllowCredentials();                   // <-- Разрешаем куки и креденшелы
+          .AllowCredentials();                  // <-- Разрешаем куки и креденшелы
     });
 });
 
@@ -64,6 +66,9 @@ builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddScoped<IAdminTestService, AdminTestService>();
 builder.Services.AddScoped<IUserTestService, UserTestService>();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -79,7 +84,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+var uploadsPath = builder.Configuration["UploadsPath"];
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "..", "Uploads")
+    ),
+    RequestPath = "/Uploads"
+});
 
 app.UseCors("AllowSpecificOrigin");
 

@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  kursproj:
+    build: .
+    image: kursproj3:latest
+    ports:
+      - "7141:80"
+    volumes:
+      - C:/Users/makak/uploads:/Uploads
+      - C:/Users/makak/source/repos/KursProj/KursProj/ApplicationDb.db:/app/data/ApplicationDb.db

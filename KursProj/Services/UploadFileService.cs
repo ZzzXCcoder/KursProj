@@ -1,17 +1,25 @@
-﻿namespace KursProj.Services
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+
+namespace KursProj.Services
 {
     public class UploadFileService
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly string _uploadsFolder;
 
-        public UploadFileService(IWebHostEnvironment webHostEnvironment)
+        public UploadFileService(IConfiguration configuration)
         {
-            _webHostEnvironment = webHostEnvironment;
+            _uploadsFolder = configuration["UploadsPath"];
         }
 
         public async Task<string> Upload(IFormFile file)
         {
-            List<string> validExtensions = new List<string> { ".jpg", ".png", ".mp4", ".mov", ".avi", ".mkv" };
+            List<string> validExtensions = new List<string> { ".jpg", ".png", ".mp4", ".mov", ".avi", ".mkv", ".html" };
 
             string extention = Path.GetExtension(file.FileName).ToLower();
 
@@ -27,12 +35,11 @@
             }
 
             string fileName = Guid.NewGuid().ToString() + extention;
-            string uploadsFolder = Path.Combine(_webHostEnvironment.ContentRootPath, "..", "Uploads");
-            string filePath = Path.Combine(uploadsFolder, fileName);
+            string filePath = Path.Combine(_uploadsFolder, fileName);
 
-            if (!Directory.Exists(uploadsFolder))
+            if (!Directory.Exists(_uploadsFolder))
             {
-                Directory.CreateDirectory(uploadsFolder);
+                Directory.CreateDirectory(_uploadsFolder);
             }
 
             try
@@ -41,7 +48,8 @@
                 {
                     await file.CopyToAsync(stream);
                 }
-                return filePath;
+                // Возвращаем относительный путь для фронта и БД!
+                return $"/Uploads/{fileName}";
             }
             catch (Exception ex)
             {

@@ -20,7 +20,7 @@ namespace KursProj.Controllers
 
         // Получить список доступных тестов по курсу
         [HttpGet("available/{courseId}")]
-        public async Task<IActionResult> GetAvailableTests(Guid courseId)
+        public async Task<IActionResult> GetAvailableTests( Guid courseId)
         {
             var tests = await _userTestService.GetAvailableTestsAsync(courseId);
             return Ok(tests);

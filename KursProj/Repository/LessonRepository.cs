@@ -75,6 +75,7 @@ namespace KursProj.Repository
                 ContentLink = lesson.ContentLink,
                 ContentType = lesson.ContentType,
                 LessonImages = lesson.LessonImages
+		    .OrderBy(i => i.ImageOrder)
                     ?.Select(i => i.ImageUrl)
                     .ToList() ?? new()
             };
@@ -98,6 +99,7 @@ namespace KursProj.Repository
                 ContentLink = lesson.ContentLink,
                 ContentType = lesson.ContentType,
                 LessonImages = lesson.LessonImages?
+		    .OrderBy(i => i.ImageOrder)
                     .Select(img => img.ImageUrl)
                     .ToList() ?? new()
             };

@@ -29,5 +29,25 @@ namespace KursProj.Services.AdminServices
             return result;
 
         }
+        public async Task<bool> UpdateCourseDescriptionAsync(Guid courseId, string newDescription)
+        {
+            try
+            {
+                var course = await _courseRepository.GetByIdAsync(courseId);
+                if (course == null)
+                {
+                    
+                    return false;
+                }
+
+                await _courseRepository.UpdateDescriptionAsync(course, newDescription);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                
+                return false;
+            }
+        }
     }
 }

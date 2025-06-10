@@ -34,6 +34,22 @@ namespace KursProj.Controllers.AdminControllers
 
             return Ok("Курс успешно создан");
         }
+        [HttpPatch("updatedescription/{id}")]
+        public async Task<IActionResult> UpdateDescription(Guid id, [FromBody] UpdateDescriptionDto dto)
+        {
+            if (dto == null || string.IsNullOrEmpty(dto.Description))
+            {
+                return BadRequest("Description cannot be empty.");
+            }
 
+            bool updated = await _adminCourseService.UpdateCourseDescriptionAsync(id, dto.Description);
+
+            if (!updated)
+            {
+                return NotFound($"Course with id {id} not found.");
+            }
+
+            return Ok();
+        }
     }
 }

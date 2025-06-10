@@ -18,7 +18,7 @@ namespace KursProj.Controllers.AdminControllers
             _adminLessonService = adminLessonService;
         }
         [HttpPost("AddLessonToCourse")]
-        public async Task<IActionResult> CreateCourse([FromForm] AddLessonToCourseDto request, Guid courseId)
+        public async Task<IActionResult> CreateCourse([FromForm] AddLessonToCourseDto request, [FromQuery] Guid courseId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
