@@ -43,6 +43,19 @@ namespace KursProj.Services.UserService
         {
             return await _testRepository.GetTestByIdAsync(testId);
         }
+        public async Task<List<UserTestShortResultDto>> GetUserTestResultsAsync()
+        {
+            var userId = _userContext.GetUserId();
+            var results = await _testRepository.GetTestResultsForUserAsync(userId);
+            return results.Select(r => new UserTestShortResultDto
+            {
+                TestId = r.TestId,
+                TestTitle = r.Test.Title,
+                Score = r.Score,
+                DateCompleted = r.DateCompleted
+            }).ToList();
+        }
+
 
     }
 }

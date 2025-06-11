@@ -223,11 +223,26 @@ namespace KursProj.Repository
                     }
                     total++;
                 }
-                // Можно добавить другие типы вопросов здесь
+                else if (question.QuestionType == "text input")
+                {
+                    var correctAnswer = question.Answers.FirstOrDefault(a => a.IsCorrect);
+                    if (correctAnswer != null && !string.IsNullOrWhiteSpace(userAnswer.SelectedAnswer))
+                    {
+                     
+                        if (string.Equals(
+                        correctAnswer.AnswerText?.Trim(),
+                        userAnswer.SelectedAnswer?.Trim(),
+                        StringComparison.OrdinalIgnoreCase))
+                        {
+                            correct++;
+                        }
+                    }
+                 total++;
+                }
             }
 
             result.Score = total > 0 ? (correct / total) * 100 : 0;
-
+            
             await _dbContext.TestResults.AddAsync(result);
             await _dbContext.SaveChangesAsync();
 
@@ -260,6 +275,14 @@ namespace KursProj.Repository
                 DateCompleted = result.DateCompleted,
                 WrongAnswers = wrongAnswers
             };
+        }
+        public async Task<List<TestResult>> GetTestResultsForUserAsync(Guid userId)
+        {
+            return await _dbContext.TestResults
+                .Where(r => r.UserId == userId)
+                .Include(r => r.Test)
+                .OrderByDescending(r => r.DateCompleted)
+                .ToListAsync();
         }
         public async Task<ShowTestDto?> GetTestByIdAsync(Guid testId)
         {

@@ -9,6 +9,7 @@ namespace KursProj.Services.UserService
         Task<ShowTestResultDto?> GetResultAsync(Guid testId);
         Task<ShowTestDto> GetTestAsync(Guid courseId);
         Task<ShowTestDto> GetTestByIdAsync(Guid testId);
+        Task<List<UserTestShortResultDto>> GetUserTestResultsAsync();
         Task<bool> SubmitTestAsync(Guid testId, List<UserAnswerDto> userAnswers);
     }
 }

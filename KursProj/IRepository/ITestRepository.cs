@@ -10,6 +10,7 @@ namespace KursProj.IRepository
         Task<ShowTestDto> GetTestByCourseId(Guid courseId, Guid userId);
         Task<ShowTestDto?> GetTestByIdAsync(Guid testId);
         Task<ShowTestResultDto?> GetTestResultAsync(Guid userId, Guid testId);
+        Task<List<TestResult>> GetTestResultsForUserAsync(Guid userId);
         Task<bool> SubmitTestAsync(Guid userId, Guid testId, List<UserAnswerDto> userAnswers);
     }
 }

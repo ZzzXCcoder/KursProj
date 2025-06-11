@@ -19,7 +19,7 @@ namespace KursProj.Controllers.AdminControllers
         }
 
         [HttpPost("{courseId}")]
-        public async Task<IActionResult> CreateTest([FromQuery] Guid courseId, [FromBody] CreateTestDto dto)
+        public async Task<IActionResult> CreateTest([FromRoute] Guid courseId, [FromBody] CreateTestDto dto)
         {
             var testId = await _adminTestService.CreateTestAsync(dto, courseId);
 
